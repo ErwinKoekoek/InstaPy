@@ -2635,7 +2635,10 @@ def get_additional_data(browser):
     soup = BeautifulSoup(browser.page_source, "html.parser")
     for text in soup(text=re.compile(r"window.__additionalDataLoaded")):
         if re.search("^window.__additionalDataLoaded", text):
-            additional_data = json.loads(re.search("{.*}", text).group())
+            try:
+                additional_data = json.loads(re.search("{.*}", text).group())
+            except Exception:
+                continue
             break
 
     return additional_data
